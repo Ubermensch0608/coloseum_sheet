@@ -8,11 +8,16 @@ const ItemSheet = () => {
   const [clickedRowId, setClickedRowId] = useState();
   const tableData = useSelector((state) => state.data.tableData);
 
+  console.log(tableData);
   const keys = Object.keys(MOCK_DATA[0]);
 
   const isCheckedHandler = (event) => {
     const isChecked = event.target.checked;
-    console.log(isChecked);
+    const checkedColumn = event.target.id;
+
+    for (let i = 0; i < tableData.length; i++) {
+      console.log(tableData[i][checkedColumn]);
+    }
   };
 
   const setHighLightHandler = (event) => {
@@ -35,7 +40,11 @@ const ItemSheet = () => {
                 <div>
                   <span>{key}</span>
                   <span>
-                    <input type="checkbox" onChange={isCheckedHandler} />
+                    <input
+                      id={key}
+                      type="checkbox"
+                      onChange={isCheckedHandler}
+                    />
                   </span>
                 </div>
               </Th>
