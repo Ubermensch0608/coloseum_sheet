@@ -11,7 +11,6 @@ const ItemSheet = () => {
 
   const [clickedId, setClickedId] = useState();
   const [clickedRowId, setClickedRowId] = useState();
-  const tableData = useSelector((state) => state.data.tableData);
   const sortedData = useSelector((state) => state.sort);
 
   const keys = Object.keys(MOCK_DATA[0]);
@@ -45,7 +44,6 @@ const ItemSheet = () => {
       setSelected([...selected, value]);
     }
   };
-
   useEffect(() => {
     const clickOutsideHandler = (event) => {
       if (outsideRef.current && !outsideRef.current.contains(event.target)) {
@@ -54,6 +52,7 @@ const ItemSheet = () => {
     };
     document.addEventListener("click", clickOutsideHandler);
     dispatch(currentRowActions.setCurrentRow(clickedRowId));
+    console.log(Array.from(new Set([...selected, ...rows])));
     setRows(Array.from(new Set([...selected, ...rows])));
     setTableHeight(tableRef.current.getBoundingClientRect().height);
 
