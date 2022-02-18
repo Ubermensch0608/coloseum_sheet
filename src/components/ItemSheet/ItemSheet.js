@@ -1,25 +1,43 @@
 import React, { useState } from "react";
 import MOCK_DATA from "assets/MOCK_DATA.json";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SortButton from "./SortButton";
 
 const ItemSheet = () => {
+  const dispatch = useDispatch();
   const [clickedId, setClickedId] = useState();
   const [clickedRowId, setClickedRowId] = useState();
-  const tableData = useSelector((state) => state.data.tableData);
+  const tableData = useSelector((state) => state.data.reservedData);
+  const [newData, setNewData] = useState(tableData);
 
-  console.log(tableData);
   const keys = Object.keys(MOCK_DATA[0]);
-  const sortedData = useSelector((state) => state.sort);
-  const [selColumn, setSelColumn] = useState(null);
 
   const isCheckedHandler = (event) => {
+    setNewData(tableData);
     const isChecked = event.target.checked;
     const checkedColumn = event.target.id;
 
     for (let i = 0; i < tableData.length; i++) {
-      console.log(tableData[i][checkedColumn]);
+      const reservedColumn = tableData[i][checkedColumn];
+
+      const obj = newData[i];
+
+      const exceptCategory = Object.keys(obj).reduce((acc, key) => {
+        if (key === checkedColumn) {
+          acc[key] = obj[key];
+        }
+
+        return acc;
+      }, {});
+
+      setNewData((prevState) => {
+        return [exceptCategory, ...prevState];
+      });
+
+      if (isChecked) {
+        console.log(reservedColumn);
+      }
     }
   };
 
@@ -42,18 +60,14 @@ const ItemSheet = () => {
               <Th key={index}>
                 <div>
                   <span>{key}</span>
-                  <SortButton
-                    columnName={key}
-                    index={index}
-                    selColumn={selColumn}
-                    setSelColumn={setSelColumn}
-                  />
                   <span>
                     <input
                       id={key}
                       type="checkbox"
                       onChange={isCheckedHandler}
                     />
+                    <SortButton />
+                    <SortButton />
                   </span>
                 </div>
               </Th>
@@ -61,7 +75,7 @@ const ItemSheet = () => {
           </tr>
         </Thead>
         <tbody>
-          {sortedData.map((data, index) => (
+          {newData.map((data, index) => (
             <Tr
               key={index}
               id={index}

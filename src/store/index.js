@@ -2,7 +2,8 @@ import { configureStore, createSlice } from "@reduxjs/toolkit";
 import MOCK_DATA from "assets/MOCK_DATA.json";
 
 const tableInitialState = {
-  tableData: [],
+  tableData: [...MOCK_DATA],
+  reservedData: [...MOCK_DATA],
 };
 
 const tableSlice = createSlice({
@@ -11,6 +12,9 @@ const tableSlice = createSlice({
   reducers: {
     getTableData(state, action) {
       state.tableData = action.payload;
+    },
+    reserve(state, action) {
+      state.reservedData = action.payload;
     },
   },
 });
