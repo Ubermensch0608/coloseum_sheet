@@ -5,6 +5,7 @@ import { AiOutlineTable } from "react-icons/ai";
 import { BiCard } from "react-icons/bi";
 import styled from "styled-components";
 import * as Constants from "constants";
+import ResetButton from "./ResetButton";
 
 const TABLE = "table";
 const CARD = "card";
@@ -18,6 +19,7 @@ const SelectView = () => {
       setView(CARD);
     }
   };
+
   return (
     <Fragment>
       <ButtonContainer>
@@ -28,12 +30,13 @@ const SelectView = () => {
           <BiCard size={30} />
         </ButtonDiv>
       </ButtonContainer>
+
       {view === TABLE ? <ItemSheet /> : <Cards />}
     </Fragment>
   );
 };
 
-const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
   display: inline-flex;
   justify-content: flex-end;
   margin-bottom: 5px;
