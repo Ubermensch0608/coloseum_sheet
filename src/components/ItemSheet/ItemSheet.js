@@ -8,12 +8,11 @@ import * as S from "./styles";
 import { ButtonContainer } from "components/SelectView";
 import Button from "layout/Button";
 
-const ItemSheet = () => {
+const ItemSheet = (props) => {
   const dispatch = useDispatch();
 
   const [clickedId, setClickedId] = useState();
   const [clickedRowId, setClickedRowId] = useState();
-  const tableData = useSelector((state) => state.data.tableData);
   const sortedData = useSelector((state) => state.sort);
 
   const keys = Object.keys(MOCK_DATA[0]);
@@ -26,6 +25,8 @@ const ItemSheet = () => {
   const [tableHeight, setTableHeight] = useState();
 
   const clickHandler = () => {
+    setHighLightHandler();
+    setRowHighLightHandler();
     dispatch(setCurrentRow(clickedRowId));
   };
 
@@ -51,14 +52,16 @@ const ItemSheet = () => {
       setSelected([...selected, value]);
     }
   };
-
   useEffect(() => {
     const clickOutsideHandler = (event) => {
-      if (outsideRef.current && !outsideRef.current.contains(event.target)) {
+      const currentOutside = outsideRef.current;
+      if (currentOutside && !currentOutside.contains(event.target)) {
         dispatch(setCurrentRow(-1));
       }
     };
     document.addEventListener("click", clickOutsideHandler);
+    dispatch(setCurrentRow(clickedRowId));
+
     setRows(Array.from(new Set([...selected, ...rows])));
     setTableHeight(tableRef.current.getBoundingClientRect().height);
 
@@ -68,7 +71,6 @@ const ItemSheet = () => {
   }, [clickedRowId, outsideRef, selected]);
 
   const handleClick = (e) => {
-    console.log(e.currentTarget.id);
     if (e.currentTarget.id === "upBtn") {
       outsideRef.current.scrollTop -= tableHeight * 0.2;
     } else if (e.currentTarget.id === "downBtn") {
@@ -119,14 +121,13 @@ const ItemSheet = () => {
             <S.Tr
               key={index}
               id={index}
-              onMouseOver={setRowHighLightHandler}
+              onClick={setRowHighLightHandler}
               clickedId={clickedRowId}
             >
               {Object.values(data).map((value, index) => (
                 <S.Td
                   key={index}
                   id={index}
-                  onMouseOver={setHighLightHandler}
                   clickedId={clickedId}
                   onClick={clickHandler}
                 >

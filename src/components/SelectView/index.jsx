@@ -18,6 +18,7 @@ const SelectView = () => {
       setView(CARD);
     }
   };
+
   return (
     <Fragment>
       <ButtonContainer>
@@ -28,6 +29,7 @@ const SelectView = () => {
           <BiCard size={30} />
         </ButtonDiv>
       </ButtonContainer>
+
       {view === TABLE ? <ItemSheet /> : <Cards />}
     </Fragment>
   );
