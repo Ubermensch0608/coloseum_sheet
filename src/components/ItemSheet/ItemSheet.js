@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import MOCK_DATA from "assets/MOCK_DATA.json";
-import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import SortButton from "./SortButton";
-import { currentRowActions } from "store";
+import { currentRowActions, setCurrentRow } from "store/currentRowSlice";
 import PortalButton from "layout/PortalButton";
+import * as S from "./styles";
 
 const ItemSheet = () => {
   const dispatch = useDispatch();
@@ -21,6 +21,10 @@ const ItemSheet = () => {
 
   const tableRef = useRef();
   const [tableHeight, setTableHeight] = useState();
+
+  const clickHandler = () => {
+    dispatch(setCurrentRow(clickedRowId));
+  };
 
   const isCheckedHandler = (event) => {
     const currentValue = event.target.value;
@@ -47,11 +51,11 @@ const ItemSheet = () => {
   useEffect(() => {
     const clickOutsideHandler = (event) => {
       if (outsideRef.current && !outsideRef.current.contains(event.target)) {
-        dispatch(currentRowActions.setCurrentRow(-1));
+        dispatch(setCurrentRow(-1));
       }
     };
     document.addEventListener("click", clickOutsideHandler);
-    dispatch(currentRowActions.setCurrentRow(clickedRowId));
+    dispatch(setCurrentRow(clickedRowId));
     console.log(Array.from(new Set([...selected, ...rows])));
     setRows(Array.from(new Set([...selected, ...rows])));
     setTableHeight(tableRef.current.getBoundingClientRect().height);
@@ -62,7 +66,6 @@ const ItemSheet = () => {
   }, [clickedRowId, outsideRef, selected]);
 
   const handleClick = (e) => {
-    console.log(e.currentTarget.id);
     if (e.currentTarget.id === "upBtn") {
       outsideRef.current.scrollTop -= tableHeight * 0.2;
     } else if (e.currentTarget.id === "downBtn") {
@@ -71,13 +74,13 @@ const ItemSheet = () => {
   };
 
   return (
-    <TableWrapper ref={outsideRef}>
+    <S.TableWrapper ref={outsideRef}>
       <PortalButton handleClick={handleClick} />
-      <Table>
-        <Thead>
+      <S.Table>
+        <S.Thead>
           <tr>
             {rows.map((key, index) => (
-              <Th key={index}>
+              <S.Th key={index}>
                 <div>
                   <span>{key}</span>
                   <SortButton
@@ -95,82 +98,35 @@ const ItemSheet = () => {
                     />
                   </span>
                 </div>
-              </Th>
+              </S.Th>
             ))}
           </tr>
-        </Thead>
+        </S.Thead>
         <tbody ref={tableRef}>
           {sortedData.map((data, index) => (
-            <Tr
+            <S.Tr
               key={index}
               id={index}
-              onClick={setRowHighLightHandler}
+              onMouseOver={setRowHighLightHandler}
               clickedId={clickedRowId}
             >
               {Object.values(data).map((value, index) => (
-                <Td
+                <S.Td
                   key={index}
                   id={index}
-                  onClick={setHighLightHandler}
+                  onMouseOver={setHighLightHandler}
                   clickedId={clickedId}
+                  onClick={clickHandler}
                 >
                   {data[rows[index]]}
-                </Td>
+                </S.Td>
               ))}
-            </Tr>
+            </S.Tr>
           ))}
         </tbody>
-      </Table>
-    </TableWrapper>
+      </S.Table>
+    </S.TableWrapper>
   );
 };
-
-const TableWrapper = styled.div`
-  overflow: auto;
-  height: 90vh;
-  position: relative;
-`;
-
-const Table = styled.table`
-  overflow: auto;
-`;
-
-const Thead = styled.thead`
-  position: sticky;
-  top: 1px;
-  background-color: #fff;
-`;
-
-const Th = styled.th`
-  position: sticky;
-  padding: 10px;
-  outline: 1px solid black;
-  text-align: center;
-  white-space: nowrap;
-
-  div {
-    display: flex;
-  }
-
-  span {
-    display: flex;
-    align-items: center;
-    margin-right: 5px;
-  }
-`;
-
-const Tr = styled.tr`
-  padding: 100px;
-  background-color: ${(props) => props.clickedId === props.id && "#D3DEDC"};
-`;
-
-const Td = styled.td`
-  padding: 15px;
-  text-align: center;
-  outline: 1px solid black;
-  white-space: nowrap;
-
-  background-color: ${(props) => props.clickedId === props.id && "#D3DEDC"};
-`;
 
 export default ItemSheet;
