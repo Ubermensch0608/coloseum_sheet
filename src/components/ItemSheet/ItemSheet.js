@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import MOCK_DATA from "assets/MOCK_DATA.json";
 import { useDispatch, useSelector } from "react-redux";
 import SortButton from "./SortButton";
-import { currentRowActions, setCurrentRow } from "store/currentRowSlice";
+import { setCurrentRow } from "store/currentRowSlice";
 import PortalButton from "layout/PortalButton";
 import * as S from "./styles";
+import Button from "layout/Button";
+import { ButtonContainer } from "components/SelectView";
 
-const ItemSheet = () => {
+const ItemSheet = (props) => {
   const dispatch = useDispatch();
 
   const [clickedId, setClickedId] = useState();
@@ -50,13 +52,14 @@ const ItemSheet = () => {
   };
   useEffect(() => {
     const clickOutsideHandler = (event) => {
-      if (outsideRef.current && !outsideRef.current.contains(event.target)) {
+      const currentOutside = outsideRef.current;
+      if (currentOutside && !currentOutside.contains(event.target)) {
         dispatch(setCurrentRow(-1));
       }
     };
     document.addEventListener("click", clickOutsideHandler);
     dispatch(setCurrentRow(clickedRowId));
-    console.log(Array.from(new Set([...selected, ...rows])));
+
     setRows(Array.from(new Set([...selected, ...rows])));
     setTableHeight(tableRef.current.getBoundingClientRect().height);
 
@@ -73,8 +76,19 @@ const ItemSheet = () => {
     }
   };
 
+  const resetHandler = () => {
+    setSelected([]);
+    setRows(Array.from(new Set(keys)));
+  };
+
+  console.log(props.onResetRows);
+
   return (
     <S.TableWrapper ref={outsideRef}>
+      <ButtonContainer>
+        <Button onClick={resetHandler}>우선순위 리셋</Button>
+      </ButtonContainer>
+
       <PortalButton handleClick={handleClick} />
       <S.Table>
         <S.Thead>
