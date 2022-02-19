@@ -5,7 +5,6 @@ import { AiOutlineTable } from "react-icons/ai";
 import { BiCard } from "react-icons/bi";
 import styled from "styled-components";
 import * as Constants from "constants";
-import ResetButton from "./ResetButton";
 
 const TABLE = "table";
 const CARD = "card";
