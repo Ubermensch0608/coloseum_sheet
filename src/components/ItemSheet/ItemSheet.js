@@ -25,6 +25,8 @@ const ItemSheet = (props) => {
   const [tableHeight, setTableHeight] = useState();
 
   const clickHandler = () => {
+    setHighLightHandler();
+    setRowHighLightHandler();
     dispatch(setCurrentRow(clickedRowId));
   };
 
@@ -121,14 +123,13 @@ const ItemSheet = (props) => {
             <S.Tr
               key={index}
               id={index}
-              onMouseOver={setRowHighLightHandler}
+              onClick={setRowHighLightHandler}
               clickedId={clickedRowId}
             >
               {Object.values(data).map((value, index) => (
                 <S.Td
                   key={index}
                   id={index}
-                  onMouseOver={setHighLightHandler}
                   clickedId={clickedId}
                   onClick={clickHandler}
                 >
