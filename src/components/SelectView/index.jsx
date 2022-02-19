@@ -39,7 +39,7 @@ const SelectView = () => {
 export const ButtonContainer = styled.div`
   display: inline-flex;
   justify-content: flex-end;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 `;
 const ButtonDiv = styled.button`
   border-radius: 5px;
