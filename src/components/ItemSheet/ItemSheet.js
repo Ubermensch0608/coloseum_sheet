@@ -1,28 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
-import MOCK_DATA from "assets/MOCK_DATA.json";
 import { useDispatch, useSelector } from "react-redux";
-import SortButton from "./SortButton";
+
 import { setCurrentRow } from "store/currentRowSlice";
+import MOCK_DATA from "assets/MOCK_DATA.json";
+
+import { ButtonContainer } from "components/SelectView/styles";
+import SortButton from "./SortButton";
 import PortalButton from "layout/PortalButton";
-import * as S from "./styles";
 import Button from "layout/Button";
-import { ButtonContainer } from "components/SelectView";
+import * as S from "./styles";
 
 const ItemSheet = (props) => {
   const dispatch = useDispatch();
+  const keys = Object.keys(MOCK_DATA[0]);
 
   const [clickedId, setClickedId] = useState();
   const [clickedRowId, setClickedRowId] = useState();
   const sortedData = useSelector((state) => state.sort);
 
-  const keys = Object.keys(MOCK_DATA[0]);
   const [rows, setRows] = useState(keys);
   const [selColumn, setSelColumn] = useState(null);
   const [selected, setSelected] = useState([]);
-  const outsideRef = useRef();
-
-  const tableRef = useRef();
   const [tableHeight, setTableHeight] = useState();
+
+  const outsideRef = useRef();
+  const tableRef = useRef();
 
   const clickHandler = () => {
     dispatch(setCurrentRow(clickedRowId));
@@ -80,8 +82,6 @@ const ItemSheet = (props) => {
     setSelected([]);
     setRows(Array.from(new Set(keys)));
   };
-
-  console.log(props.onResetRows);
 
   return (
     <S.TableWrapper ref={outsideRef}>

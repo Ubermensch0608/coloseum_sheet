@@ -1,6 +1,5 @@
 import GlobalStyle from "style/GlobalStyle";
 import MainPage from "layout/MainPage";
-
 import SelectView from "components/SelectView";
 
 const App = () => {
