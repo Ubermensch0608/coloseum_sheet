@@ -4,7 +4,7 @@
 
 ## 👏 프로젝트 소개
 
-> 최대한 많은 양의 데이터를 확인할 수 있는 화면을 설계하고 구현했습니다.
+> 자신이 원하는 데이터를 선택하여 효율적으로 이용할 수 있는 기능을 가진 물류 정보 처리 웹 구현
 
 ## 🙋‍♀️🙋‍♂️ 팀원
 
@@ -118,7 +118,7 @@ $ git clone https://github.com/console-lo9/coloseum_sheet.git
 
 # install modules
 $ cd coloseum_sheet
-$ npm install || yarn
+$ npm ci || yarn install
 
 # start
 $ npm start || yarn start
